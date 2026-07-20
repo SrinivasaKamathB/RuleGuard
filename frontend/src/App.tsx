@@ -76,11 +76,7 @@ function App() {
 
       setActiveAgent(-1);
 
-      const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3001";
-
-const response = await fetch(`${API_URL}/api/analyze`, {
-        method: "POST",
+const response = await fetch("/.netlify/functions/analyze", {        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
