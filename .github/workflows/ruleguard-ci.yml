@@ -1,0 +1,44 @@
+name: RuleGuard Release Safety Gate
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  ruleguard-audit:
+    name: Multi-Agent Invariant Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Install RuleGuard Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Execute RuleGuard Safety Gate on PR Diff
+        id: ruleguard-gate
+        run: |
+          # Extract git diff between target branch and PR branch
+          git diff origin/${{ github.base_ref || 'main' }}...HEAD > pr_changes.diff
+          
+          # Run RuleGuard CI CLI Scanner
+          cd backend
+          npm run cli -- --diff ../pr_changes.diff --env production
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RELEASE_SIGNING_SECRET: ${{ secrets.RELEASE_SIGNING_SECRET }}

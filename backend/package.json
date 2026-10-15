@@ -1,21 +1,30 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "RuleGuard AI backend",
-  "main": "index.js",
+  "name": "@ruleguard/engine",
+  "version": "2.0.0",
+  "description": "RuleGuard Release Governance & Invariant Safety Engine",
+  "main": "src/server.ts",
   "scripts": {
     "dev": "tsx src/server.ts",
     "start": "tsx src/server.ts",
-    "test": "tsx src/orchestrator.test.ts",
+    "test": "tsx src/orchestrator.test.ts && tsx src/orchestrator2.test.ts",
+    "cli": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "release-governance",
+    "safety-gate",
+    "invariant-checking",
+    "static-analysis",
+    "ci-cd"
+  ],
+  "author": "Srinivasa Kamath B",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
     "openai": "^6.48.0",
     "tsx": "^4.23.1"
   },

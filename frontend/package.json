@@ -1,7 +1,10 @@
 {
-  "name": "frontend",
+  "name": "@ruleguard/web",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "description": "RuleGuard Enterprise Release Intelligence Dashboard",
+  "author": "Srinivasa Kamath B",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^1.56.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

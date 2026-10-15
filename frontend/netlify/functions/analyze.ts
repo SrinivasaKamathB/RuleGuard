@@ -19,12 +19,24 @@ export default async (req: Request) => {
   try {
     const body = await req.json();
 
-    const { oldCompanyRecords, proposedUpdate } = body;
+    const {
+      oldCompanyRecords,
+      proposedUpdate,
+      mode,
+      activeInvariants,
+      apiKey,
+      provider,
+    } = body;
 
-    if (!oldCompanyRecords || !proposedUpdate) {
+    if (
+      !oldCompanyRecords ||
+      typeof oldCompanyRecords !== "string" ||
+      !proposedUpdate ||
+      typeof proposedUpdate !== "string"
+    ) {
       return new Response(
         JSON.stringify({
-          error: "Old company records and proposed update are required.",
+          error: "oldCompanyRecords and proposedUpdate must be valid non-empty string payloads.",
         }),
         {
           status: 400,
@@ -35,9 +47,27 @@ export default async (req: Request) => {
       );
     }
 
-    const result = await runRuleGuardAnalysis({
+    if (oldCompanyRecords.length > 500_000 || proposedUpdate.length > 500_000) {
+      return new Response(
+        JSON.stringify({
+          error: "Payload exceeds maximum allowed length of 500,000 characters per field.",
+        }),
+        {
+          status: 413,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    const result = runRuleGuardAnalysis({
       oldCompanyRecords,
       proposedUpdate,
+      mode: mode || "demo",
+      activeInvariants,
+      apiKey,
+      provider,
     });
 
     return new Response(JSON.stringify(result), {

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="rg-grad-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="50%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="rg-grad-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="rg-grad-accent" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="rg-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Hexagonal Cyber Sentinel Shield -->
+  <path
+    d="M24 2L42 9V22C42 33.6 34.4 43.1 24 46C13.6 43.1 6 33.6 6 22V9L24 2Z"
+    fill="url(#rg-grad-dark)"
+    stroke="url(#rg-grad-primary)"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Layered Angular Facet -->
+  <path
+    d="M24 7L38 12.5V22C38 31.2 32 38.8 24 41.5C16 38.8 10 31.2 10 22V12.5L24 7Z"
+    fill="#030712"
+    opacity="0.85"
+  />
+
+  <!-- Invariant Circuit & Sentinel Lattice -->
+  <path
+    d="M24 13V21M17 25L24 21L31 25M24 21V33M18 31L24 35L30 31"
+    stroke="url(#rg-grad-primary)"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Central Invariant Nexus Node -->
+  <circle cx="24" cy="21" r="3.5" fill="url(#rg-grad-accent)" filter="url(#rg-glow)" />
+  <circle cx="24" cy="21" r="1.5" fill="#ffffff" />
+
+  <!-- Peripheral Satellite Checkpoints -->
+  <circle cx="17" cy="25" r="1.8" fill="#00f2fe" />
+  <circle cx="31" cy="25" r="1.8" fill="#6366f1" />
+</svg>
