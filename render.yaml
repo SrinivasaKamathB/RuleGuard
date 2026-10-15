@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ruleguard
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RELEASE_SIGNING_SECRET
+        generateValue: true

@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -214,6 +216,25 @@ app.post("/api/verify-certificate", verifyLimiter, (req, res) => {
     verifiedAt: new Date().toISOString(),
   });
 });
+
+// Production Static Web Dashboard Serving (Supports unified single-service deployments)
+const possibleDistPaths = [
+  path.resolve(process.cwd(), "frontend/dist"),
+  path.resolve(process.cwd(), "dist"),
+  path.resolve(__dirname, "../../frontend/dist"),
+  path.resolve(__dirname, "../frontend/dist"),
+];
+const distDir = possibleDistPaths.find((p) => fs.existsSync(p));
+
+if (distDir) {
+  app.use(express.static(distDir));
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api/")) return next();
+    res.sendFile(path.join(distDir, "index.html"), (err) => {
+      if (err) next();
+    });
+  });
+}
 
 // Global Secure Error Handling Middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

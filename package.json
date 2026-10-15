@@ -1,0 +1,13 @@
+{
+  "name": "ruleguard",
+  "version": "2.0.0",
+  "description": "RuleGuard Enterprise - Institutional Memory Gatekeeper & Pre-Release Software Safety Governance Platform",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "npm --prefix backend start",
+    "test": "npm --prefix backend test"
+  },
+  "author": "Srinivasa Kamath B",
+  "license": "MIT"
+}
