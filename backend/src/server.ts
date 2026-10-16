@@ -230,11 +230,13 @@ const distDir = possibleDistPaths.find((p) => fs.existsSync(p));
 
 if (distDir) {
   app.use(express.static(distDir));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api/")) return next();
-    res.sendFile(path.join(distDir, "index.html"), (err) => {
-      if (err) next();
-    });
+  app.use((req, res, next) => {
+    if (req.method === "GET" && !req.path.startsWith("/api/")) {
+      return res.sendFile(path.join(distDir, "index.html"), (err) => {
+        if (err) next();
+      });
+    }
+    next();
   });
 }
 
