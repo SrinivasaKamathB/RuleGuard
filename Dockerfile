@@ -18,7 +18,7 @@ ENV NODE_ENV=production
 # Install backend dependencies
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy backend source
 COPY backend/ ./

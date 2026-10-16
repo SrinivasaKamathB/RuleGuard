@@ -221,8 +221,10 @@ app.post("/api/verify-certificate", verifyLimiter, (req, res) => {
 const possibleDistPaths = [
   path.resolve(process.cwd(), "frontend/dist"),
   path.resolve(process.cwd(), "dist"),
+  path.resolve(process.cwd(), "public"),
   path.resolve(__dirname, "../../frontend/dist"),
   path.resolve(__dirname, "../frontend/dist"),
+  path.resolve(__dirname, "../public"),
 ];
 const distDir = possibleDistPaths.find((p) => fs.existsSync(p));
 
