@@ -56,7 +56,15 @@ export function scanForPromptInjectionAndValidate(
   };
 }
 
-const SIGNING_SECRET = process.env.RELEASE_SIGNING_SECRET || "ruleguard-default-enterprise-signing-secret-2026";
+const DEFAULT_SECRET = "ruleguard-default-enterprise-signing-secret-2026";
+let effectiveSecret = process.env.RELEASE_SIGNING_SECRET || DEFAULT_SECRET;
+
+if (process.env.NODE_ENV === "production" && (!process.env.RELEASE_SIGNING_SECRET || process.env.RELEASE_SIGNING_SECRET === DEFAULT_SECRET)) {
+  console.warn(
+    "[SECURITY WARNING] RELEASE_SIGNING_SECRET is not set or using default value in production. Generating an ephemeral high-entropy key for this session."
+  );
+  effectiveSecret = crypto.randomBytes(32).toString("hex");
+}
 
 export function generateReleaseCertificateHmac(
   fingerprintSha256: string,
@@ -64,7 +72,7 @@ export function generateReleaseCertificateHmac(
   timestamp: string
 ): string {
   const payload = `${fingerprintSha256}:${decision}:${timestamp}`;
-  return crypto.createHmac("sha256", SIGNING_SECRET).update(payload).digest("hex");
+  return crypto.createHmac("sha256", effectiveSecret).update(payload).digest("hex");
 }
 
 export function verifyReleaseCertificateHmac(

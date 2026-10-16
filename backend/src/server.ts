@@ -36,15 +36,20 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server) or matching allowed origins
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
-        callback(null, true);
-      } else {
-        callback(null, true); // Permissive in dev, hardened via ALLOWED_ORIGINS in prod
+      // Allow server-to-server or requests with no origin header
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+        return callback(null, true);
       }
+      // Strict blocking in production mode
+      if (process.env.NODE_ENV === "production") {
+        return callback(new Error(`CORS policy violation: origin '${origin}' is not allowed.`));
+      }
+      // Permissive fallback for local development
+      return callback(null, true);
     },
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-API-Key"],
     credentials: true,
   })
 );

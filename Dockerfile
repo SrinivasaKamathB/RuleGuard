@@ -26,6 +26,13 @@ COPY backend/ ./
 # Copy built frontend static assets into backend public directory
 COPY --from=frontend-builder /app/frontend/dist /app/backend/public
 
+# Enterprise Security Hardening: Run as unprivileged node user
+RUN chown -R node:node /app
+USER node
+
 EXPOSE 3001
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
 
 CMD ["npm", "start"]
